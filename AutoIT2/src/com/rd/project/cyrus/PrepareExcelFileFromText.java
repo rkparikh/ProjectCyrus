@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -21,7 +24,17 @@ public class PrepareExcelFileFromText {
 		Map<String, Map<String, String>> allFormData = new LinkedHashMap<String, Map<String, String>>();
 
 		File parent = new File(Constants.INPUT_TEXT_FILES_FOLDER_PATH);
-		for (File file : parent.listFiles()) {
+		File[] files = parent.listFiles(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return (name.startsWith("image_name") && name.endsWith(".txt"));
+			}
+		});
+
+		Arrays.sort(files, LastModifiedFileComparator.LASTMODIFIED_COMPARATOR);
+
+		for (File file : files) {
 			Map<String, String> data = new LinkedHashMap<String, String>(
 					FieldsMap.SMALL_FORM_DATA_TEMPLATE);
 			String line = "";
@@ -63,7 +76,7 @@ public class PrepareExcelFileFromText {
 							.replaceAll(":", "").trim();
 					data.put("Sedol", newValue);
 				} else if (line.contains("Currency")) {
-					String newValue = line.replaceAll("Currency Traded In", "")
+					String newValue = line.replaceAll("Currency Traded In", "").replaceAll("Currency Traded in", "")
 							.replaceAll(":", "").trim();
 					data.put("Currency", newValue);
 				} else if (line.contains("Listing")) {

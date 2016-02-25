@@ -7,7 +7,7 @@ import static com.rd.project.cyrus.common.Constants.*;
 public class FieldsMap {
 
 	public static Map<String, String> SMALL_FORM_DATA_TEMPLATE = new LinkedHashMap<String, String>();
-	{
+	static {
 		SMALL_FORM_DATA_TEMPLATE.put("Image File", "");
 		SMALL_FORM_DATA_TEMPLATE.put("Form No", "");
 		SMALL_FORM_DATA_TEMPLATE.put("Company Name", "");
