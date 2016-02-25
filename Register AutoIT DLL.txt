@@ -1,0 +1,2 @@
+1) open cmd as Administrator
+2) run command "regsvr32 C:/AutoItX3.dll"
